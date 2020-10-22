@@ -1,0 +1,16 @@
+id,type,name,description,feed,tags,inputid,outputid,transformer,columnblacklist,columnwhitelist,breakdataframelineage,persist
+customRatingAgg,CustomSparkAction,"","",custom-rating-csv,"","custom-rating-csv1,custom-rating-csv2",custom-rating-csv-agg,className: com.sample.RatingTransformer,"","",false,false
+export-data-objects,CopyAction,"","",export-metadata,"",applications-conf-do,export-data-objects,"","","",false,false
+check-primary-keys,CopyAction,"","",check-constraints,"",check-primary-keys,export-primary-key-violations,"","","",false,false
+loadHive,CopyAction,"","",ab-parquet-hive,"",ab-parquet-hadoop,ab-hive,"","","",false,false
+customRatingDf2Csv2,CopyAction,"","",custom-rating-csv,"",custom-rating-df,custom-rating-csv2,"","","",false,false
+export-actions,CopyAction,"","",export-metadata,"",applications-conf-actions,export-actions,"","","",false,false
+loadTransformedWithSQL,CopyAction,"","",ab-sql-transform,"",ab-csv-org,ab-transformed-csv-hadoop,"sqlCode: select id,name,host_id,number_of_reviews from ab_csv_org where neighbourhood_group = 'Manhattan'","","",false,false
+loadTransformedWithMultipleSQLs,CustomSparkAction,"","",ab-sql-multi-transform,"",ab-csv-org,"ab-multi-transformed-csv-hadoop1,ab-multi-transformed-csv-hadoop2","sqlCode: Map(DataObject~ab-multi-transformed-csv-hadoop2 -> select id,name from ab_csv_org where neighbourhood_group = 'Brooklyn', DataObject~ab-multi-transformed-csv-hadoop1 -> select id,name,host_id,number_of_reviews from ab_csv_org where neighbourhood_group = 'Manhattan')","","",false,false
+customDf2Csv,CopyAction,"","",custom-my-df2csv,"",custom-my-df,custom-csv-entire-room,"","","",false,false
+customRatingDf2Csv1,CopyAction,"","",custom-rating-csv,"",custom-rating-df,custom-rating-csv1,"","","",false,false
+copyCsv,CopyAction,"","",ab-csv,"",ab-csv-org,ab-csv-hadoop,"","","",false,false
+loadJdbc2Csv,CopyAction,"","",ab-jdbc,"",ab-reduced-hsqldb,ab-reduced-csv-hadoop,"","","",false,false
+loadParquet,CopyAction,"","",ab-parquet-hive,"",ab-csv-org,ab-parquet-hadoop,"","","",false,false
+loadJdbc,CopyAction,"","",ab-jdbc,"",ab-csv-org,ab-reduced-hsqldb,className: com.sample.ReduceNycCSVTransformer,"","",false,false
+loadExcel,CopyAction,"","",ab-excel,"",ab-csv-org,ab-excel,"","","",false,false
