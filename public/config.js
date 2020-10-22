@@ -1,4 +1,4 @@
-[
+const layers = [
   {
     "name": "src",
     "color": "#8E44AD",
@@ -14,4 +14,5 @@
     "color": "#5DADE2",
     "prio": 10
   }
-]
+];
+export default layers;

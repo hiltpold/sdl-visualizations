@@ -1,3 +1,5 @@
+import layers from "./config.js";
+
 console.log("starting d3", d3);
 
 const rootElement = d3.select("#sdl-lineage-container")
@@ -23,14 +25,12 @@ var sankeyChart = svg
   .attr("width", viewWidth)
   .attr("transform", "translate("+margin+" "+2*margin+")")
 
-const files = ["../data/data-objects.csv","../data/actions.csv","layerConf.json"];
+const files = ["../data/data-objects.csv","../data/actions.csv"];
 
 const d3Data = files.map( (fn) => {
-  const extension = fn.split(".").pop();
-  if(extension == "csv"){
+  const extension = fn.slice(-3);
+  if(extension === "csv"){
     return d3.csv(fn);
-  } else if (extension == "json") {
-    return d3.json(fn)
   } else {
     throw ("Unknown file format. ONly .csv and .json are valid at the moment.");
   }
@@ -50,12 +50,12 @@ Promise.all(d3Data).then((data) => {
     // explode outputs
     .flatMap( edgePrep => edgePrep.action.outputid.split(",").map( output => ({source: edgePrep.input, target: output, value: 1, action: edgePrep.action})))
   // read layer configuration
-  const layers = data[2];
+  //const layers = data[2];
 
-  createLineage(nodes,edges,layers)
+  createLineage(nodes,edges, layers)
 }).catch((error) => {
   console.log(error);
-});
+})
 
 /*
 // a synthetic example
