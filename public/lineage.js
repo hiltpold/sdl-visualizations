@@ -23,26 +23,39 @@ var sankeyChart = svg
   .attr("width", viewWidth)
   .attr("transform", "translate("+margin+" "+2*margin+")")
 
+const files = ["../data/data-objects.csv","../data/actions.csv","layerConf.json"];
+
+const d3Data = files.map( (fn) => {
+  const extension = fn.split(".").pop();
+  if(extension == "csv"){
+    return d3.csv(fn);
+  } else if (extension == "json") {
+    return d3.json(fn)
+  } else {
+    throw ("Unknown file format. ONly .csv and .json are valid at the moment.");
+  }
+});
+
 // define data
-Promise.all([
-  d3.csv("../data/data-objects.csv"),
-  d3.csv("../data/actions.csv"),
-  d3.json("layerConf.json")
-]).then(function(datas) {
+Promise.all(d3Data).then((data) => {
+  console.log(data);
   // prepare nodes
-  var dataObjects = datas[0];
-  var nodes = dataObjects.map( dataObject => ({name: dataObject.id, layerName: dataObject.layer, dataObject: dataObject}))
+  const dataObjects = data[0];
+  const nodes = dataObjects.map( dataObject => ({name: dataObject.id, layerName: dataObject.layer}));
   // prepare edges
-  var actions = datas[1];
-  var edges = actions
+  const actions = data[1];
+  const edges = actions
     // inputs outputs
     .flatMap( action => action.inputid.split(",").map( input => ({action, input})))
     // explode outputs
     .flatMap( edgePrep => edgePrep.action.outputid.split(",").map( output => ({source: edgePrep.input, target: output, value: 1, action: edgePrep.action})))
   // read layer configuration
-  var layers = datas[2];
+  const layers = data[2];
+
   createLineage(nodes,edges,layers)
-})
+}).catch((error) => {
+  console.log(error);
+});
 
 /*
 // a synthetic example
