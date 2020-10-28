@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+    webserver:
+        image: nginx:mainline-alpine
+        container_name: weberver
+        ports:
+        - 8080:80
+        volumes:
+        - ./webserver:/etc/nginx/conf.d
+        - ./frontend/public:/var/www/html
+        restart: unless-stopped
+    atlas:
+        image: sburn/apache-atlas
+        container_name: apache-atlas
+        ports: 
+            - "21000:21000"
+        command: ["python", "/opt/apache-atlas-2.1.0/bin/atlas_start.py"]
+        restart: unless-stopped
