@@ -9,23 +9,27 @@ const viewWidth = window.innerWidth;
 const viewHeight = window.innerHeight;
 const margin = 10;
 const spaceBetweenEdges = 6;
-const width = viewWidth - 2*margin;
-const height = viewHeight - 3*margin; // +1 margin for layer text
+const width = viewWidth
+const height = viewHeight;
 
 // append the svg object to the body of the page
-var svg = rootElement
+const svg = rootElement
   .append("svg")
   .classed("sdl-lineage-content ", true)
   .attr("viewBox", 0+" "+0+" "+viewWidth+" "+viewHeight)
   .attr("preserveAspectRatio", "xMinYMin meet")
 
-var sankeyChart = svg
+const sankeyChart = svg
   .append("g")
   .attr("height", viewHeight)
   .attr("width", viewWidth)
-  .attr("transform", "translate("+margin+" "+2*margin+")")
 
-const files = ["../data/data-objects.csv","../data/actions.csv"];
+//const files = ["../data/data-objects.csv","../data/actions.csv"];
+//const files = ["../data/metadata-data-objects.csv","../data/metadata-actions.csv"];
+//const files = ["../data/metadata-data-objects-stamm.csv","../data/metadata-actions-stamm.csv"];
+//const files = ["../data/metadata-data-objects-bew.csv","../data/metadata-actions-bew.csv"];
+
+const files = ["../data/vertices_grouped.csv", "../data/edges_grouped.csv"];
 
 const d3Data = files.map( (fn) => {
   const extension = fn.slice(-3);
@@ -39,120 +43,88 @@ const d3Data = files.map( (fn) => {
 // define data
 Promise.all(d3Data).then((data) => {
   console.log(data);
-  // prepare nodes
-  const dataObjects = data[0];
-  const nodes = dataObjects.map( dataObject => ({name: dataObject.id, layerName: dataObject.layer}));
-  // prepare edges
-  const actions = data[1];
-  const edges = actions
-    // inputs outputs
-    .flatMap( action => action.inputid.split(",").map( input => ({action, input})))
-    // explode outputs
-    .flatMap( edgePrep => edgePrep.action.outputid.split(",").map( output => ({source: edgePrep.input, target: output, value: 1, action: edgePrep.action})))
-  // read layer configuration
-  //const layers = data[2];
+  const nodes = data[0].map( node => ({name: node.name, group: node.group}));
+  const links = data[1].map( link => ({source: link.source, target: link.target, value: 1 }));
+  
+  /*
+  console.log(edges)
+  console.log(nodes)
+  */
 
-  createLineage(nodes,edges, layers)
+  createLineage(nodes, links, layers)
 }).catch((error) => {
   console.log(error);
-})
+});
 
-/*
-// a synthetic example
-const edges = [
- {source: "A", target: "B", value: 1, state: "failed" },
- {source: "B", target: "C", value: 1, state: "running" },
- {source: "A", target: "B", value: 1 },
- {source: "B", target: "D", value: 1 },
- {source: "C", target: "D", value: 1 },
- {source: "A", target: "D", value: 1 },
- {source: "A1", target: "A", value: 1, state: "succeeded" },
- {source: "A1", target: "D", value: 1 },
-]
-const nodes = [
- {name: "A", layerName: "stg"},
- {name: "A1", layerName: "stg"},
- {name: "B", layerName: "int"},
- {name: "C", layerName: "int"},
- {name: "D", layerName: "btl"},
-]
-const layers = {
- stg: {color: "#8E44AD"},
- int: {color: "#2471A3"},
- btl: {color: "#5DADE2"},
-}
-createLineage(nodes,edges,layers)
-*/
+function createLineage(nodes, links, layers) {
 
-function createLineage(nodes, edges, layers) {
-  // add missing layers with default values
-  var layersByName = new Map(layers.map( l => [l.name, l]));
-  nodes.filter(n => n.layerName).forEach( function(n) {
-    if (!layersByName.has(n.layerName)) {
-      layersByName.set(n.layerName, {name: n.layerName, color: "#888", prio: 999});
-      layers.push(layersByName.get(n.layerName));
-    }
-  });
-  // add layer config to nodes
-  nodes.filter(n => n.layerName).forEach( n => n.layerDef = layersByName.get(n.layerName));
-  // add missing nodes with default values
-  var nodeByName = new Map(nodes.map( n => [n.name, n]));
-  edges.forEach( edge => {
-    if (!nodeByName.has(edge.source)) nodeByName.set(edge.source, {name: edge.source});
-    if (!nodeByName.has(edge.target)) nodeByName.set(edge.target, {name: edge.target});
-  });
-  // sort nodes
-  var sortedNodes = _.sortBy(Array.from(nodeByName.values()), n => n.layerDef ? n.layerDef.prio : null)
-  const data = {nodes: sortedNodes, links: edges};
+  const data = {nodes: nodes, links: links};
   console.log("data", data);
 
   // init sankey generator
   function nodeSorter(n1, n2) {
-    return n1.depthPos - n2.depthPos; // smaller pos first
+    return n2.value - n1.value; // smaller pos first
   }
   var sankey = Sankey()
     .nodeId(d => d.name)
-    .nodeAlign(d => d.depth)
+    //.nodeAlign(d => d.depth)
     .nodeSort(nodeSorter)
     .nodeWidth(15)
     .nodePadding(10)
     .size([width, height])
     .iterations(10);
 
-  // generate layout
-  var layout = sankey(data);
+  // generate layocomputeNodeDeut
+  const layout = sankey(data);
   console.log("layout", layout);
+  //const color = d3.scaleOrdinal(d3.schemeBrBG[11]);
+  const format = d3.format(",.0f");
+//  console.log(d3.scaleSequential().domain([1,10]).interpolator(d3.interpolatePuRd));
+  const colorGenerator = d3.scaleSequential().domain([1, nodes.length]).interpolator(d3.interpolateViridis);
+  const colorScale = nodes.map((x,i)=>{return d3.color(colorGenerator(i)).formatHex()});
 
-  // nodes
-  var nodePlane = sankeyChart
-    .append("g")
-    .attr("font-family", "arial")
-    .attr("font-size", 10);
-  var node = nodePlane
-    .selectAll(".node")
-    .data(layout.nodes)
-    .join("g")
-      .attr("class", "node")
-      .classed("dummyNode", d => d.dummy)
-      .attr("transform", d => "translate(" + d.x0 + "," + (d.dummy ? d.y0 + spaceBetweenEdges/2 : d.y0) + ")");
-  node.append("rect")
-      .attr("height", d => d.dummy ? Math.max(1, d.y1 - d.y0 - spaceBetweenEdges) : d.y1 - d.y0)
+  const color = d3.scaleOrdinal(colorScale);
+  
+  //const color = d3.scaleOrdinal().domain(nodes).range(d3.schemeBlues[9]);
+
+  const node = sankeyChart.selectAll("rect")
+    .data(nodes)
+    .join("rect")
+      .attr("x", d => d.x0)
+      .attr("y", d => d.y0)
+      .attr("height", d => d.y1 - d.y0)
       .attr("width", d => d.x1 - d.x0)
-      .attr("opacity", d => d.dummy ? 0.5 : null)
-      .attr("fill", d => d.dummy ? "#aaa" :
-                         d.layerName ? d.layerDef.color : "#666")
-      //.style("stroke", d => d.layerName ? "#000" : null);
-  node.filter(d => !d.dummy).append("title")
-      .text(d => `${d.name}\n${d3.format(",.0f")(d.value)}`);
-  // node name
-  node.filter(d => !d.dummy).append("text")
-      .attr("class", "nodeName")
-      .attr("x", d => d.x0 < width / 2 ? d.x1 - d.x0 + 6 : -6)
-      .attr("y", d => (d.y1 - d.y0) / 2)
-      .attr("dy", 5)
+      .attr("fill",  d => color(d.category === undefined ? d.name : d.category))
+    .append("title")
+    .text(d => `${d.name}\n${format(d.value)}`);
+  
+    const link = sankeyChart.append("g")
+      .attr("fill", "none")
+      .attr("stroke-opacity", 0.5)
+      .selectAll("g")
+      .data(links)
+      .join("g")
+      .style("mix-blend-mode", "multiply");
+     
+    link.append("path")
+    .attr("d", sankeyLinkHorizontal())
+    .attr("stroke","#aaa")
+    .attr("stroke-width", d => Math.max(1, d.width));
+
+    link.append("title").text(d => `${d.source.name} → ${d.target.name}\n${format(d.value)}`);
+
+    sankeyChart.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+    .selectAll("text")
+    .data(nodes)
+    .join("text")
+      .attr("x", d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
+      .attr("y", d => (d.y1 + d.y0) / 2)
+      .attr("dy", "0.35em")
       .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
       .text(d => d.name);
-
+      /*
   // edges
   var edgePlane = sankeyChart
     .append("g")
@@ -182,7 +154,9 @@ function createLineage(nodes, edges, layers) {
       .style("stroke-dasharray", "10, 10");
   edgeRunning.append("title")
       .text(d => `${d.source.name} → ${d.target.name}\n${d3.format(",.0f")(d.value)}`);
-
+*/
+/*
+  
   // layer box
   // calc layer box boundaries
   function updateLayerBoxDef() {
@@ -223,6 +197,8 @@ function createLineage(nodes, edges, layers) {
       .attr("text-anchor", "middle")
       .text(d => d.name);
 
+*/
+/*
   // drag nodes
   var posX, deltaY, nodeHeight;
   node.call(d3.drag()
@@ -241,7 +217,7 @@ function createLineage(nodes, edges, layers) {
       // update edges
       sankey.update(layout);
       edge.attr("d", sankeyLinkHorizontal());
-      edgeRunning.attr("d", sankeyLinkHorizontal());
+      edgeRunning.attr("d", linkHorizontal());
       // update layer boxes
       var layerBoxDef = updateLayerBoxDef();
       layerBox.attr("transform", d => "translate(" + d.x0 + "," + d.y0 + ")")
@@ -253,6 +229,7 @@ function createLineage(nodes, edges, layers) {
     })
   );
 
+  
   // Node Lineage
   // see also https://bl.ocks.org/tomshanley/abcd8a1e2876c41079a2d36332e77865
   function showNodeLineage(node) {
@@ -298,6 +275,6 @@ function createLineage(nodes, edges, layers) {
   // display  order
   edgePlane.raise();
   nodePlane.raise();
-
+  */
   console.log("lineage created")
 }

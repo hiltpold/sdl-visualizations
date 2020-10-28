@@ -1,2 +1,5 @@
 ./vscode
 ./metals
+
+sdl-viz/
+.ipynb_checkpoints

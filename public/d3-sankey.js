@@ -186,7 +186,7 @@ function Sankey() {
   }
 
   /** CHANGE: replaced with function respecting defined data layers and processes unconnected subgraphs separately **/
-  /*
+  
   function computeNodeDepths({nodes}) {
     const n = nodes.length;
     let current = new Set(nodes);
@@ -203,7 +203,9 @@ function Sankey() {
       current = next;
       next = new Set;
     }
-  }*/
+  } 
+
+  /*
   var dummyNodes = []; // holds a list of additional nodes
   var dummyLinks = []; // holds a list of pairs of additional link and optional link to replace (we cannot remove from an array...)
   function computeSubgraphNodeDepths(nodes) {
@@ -358,7 +360,7 @@ function Sankey() {
       l[1].sort(nodeSorter).forEach(assignDepthPos);
     })
   }
-
+*/
   function computeNodeHeights({nodes}) {
     const n = nodes.length;
     let current = new Set(nodes);
