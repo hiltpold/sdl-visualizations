@@ -1,0 +1,39 @@
+html,body {
+  height: 100%;
+  width:100%;
+  margin:0;
+  padding: 0;
+}
+
+#sdl-lineage-container {
+  display: block;
+  position:absolute;
+  height:auto;
+  bottom:0;
+  top:0;
+  left:0;
+  right:0;
+  margin-top:16px;
+  margin-bottom:16px;
+  margin-right:16px;
+  margin-left:16px;
+}
+
+.sdl-lineage-content {
+  height: 100%;
+  width: 100%;
+}
+
+.edge {
+  mix-blend-mode: multiply;
+}
+
+.dummyNode {
+  mix-blend-mode: multiply;
+}
+
+.edgeRunning {
+  stroke-width: 10;
+  stroke-dasharray: '10,10';
+}
+

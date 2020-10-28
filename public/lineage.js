@@ -1,6 +1,6 @@
 import layers from "./config.js";
 
-console.log("starting d3", d3);
+console.log("< D3 LOADED >", d3);
 
 const rootElement = d3.select("#sdl-lineage-container")
 
@@ -44,7 +44,7 @@ const d3Data = files.map( (fn) => {
 Promise.all(d3Data).then((data) => {
   console.log(data);
   const nodes = data[0].map( node => ({name: node.name, group: node.group}));
-  const links = data[1].map( link => ({source: link.source, target: link.target, value: 1 }));
+  const links = data[1].map( link => ({source: link.source, target: link.target, value: link.value }));
   
   /*
   console.log(edges)
@@ -63,7 +63,7 @@ function createLineage(nodes, links, layers) {
 
   // init sankey generator
   function nodeSorter(n1, n2) {
-    return n2.value - n1.value; // smaller pos first
+    return n1.depthPos - n2.depthPos; // smaller pos first
   }
   var sankey = Sankey()
     .nodeId(d => d.name)
