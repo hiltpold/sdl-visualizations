@@ -24,9 +24,11 @@ const loadData = dataFromUrls;
 Promise.all(loadData).then((data) => {
   console.log(data);
   const nodes = data[0].map( node => ({name: node.name, group: node.group}));
-  const links = data[1].map( link => ({source: link.source, target: link.target, value: link.value }));
+  const links = data[1].map( link => ({source: link.source, target: link.target, value: 1 }));
   
+  console.log("< NODES >");
   console.log(nodes);
+  console.log("< LINKS >");
   console.log(links);
 
   createLineage(nodes, links, sankeyChart);

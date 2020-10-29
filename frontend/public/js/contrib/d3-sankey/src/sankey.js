@@ -1,4 +1,5 @@
 import {max, min, sum} from "../../d3-array/src/index";
+import node from "../../d3-selection/src/selection/node";
 import {justify} from "./align.js";
 import constant from "./constant.js";
 
@@ -68,9 +69,11 @@ export default function Sankey() {
     computeNodeLinks(graph);
     computeNodeValues(graph);
     computeNodeDepths(graph);
+    //computeNodeDepthsKahn(graph);
     computeNodeHeights(graph);
     computeNodeBreadths(graph);
     computeLinkBreadths(graph);
+    //
     return graph;
   }
 
@@ -154,6 +157,35 @@ export default function Sankey() {
     }
   }
 
+  function computeNodeDepthsKahn({nodes}) {
+    // calculate in-degree
+    nodes.forEach((node) => {
+      node.inDegree  = node.targetLinks.length > 0 ? node.targetLinks.length : 0;
+      node.depth = 0;
+    });   
+    // final array that contains topologial sorted nodes
+    const sorted = [];
+    let visitedNodes = 0;
+    // get nodes without in-coming links
+    let currentNodes= nodes.filter((node) => node.targetLinks.length === 0);
+    console.log(currentNodes.map(x=>x.name));
+    while(currentNodes.length > 0) {
+      const currentNode = currentNodes.shift();
+      visitedNodes += 1;
+      sorted.push(currentNode);
+      // visit neighboring links and decrease inDegree
+      for(const {source, target} of currentNode.sourceLinks) {
+        target.inDegree -= 1;
+        if(target.inDegree == 0) {
+          currentNodes.push(target);
+          target.depth = source.depth + 1 ;
+          console.log(target);
+        }
+      }
+    }
+    if(visitedNodes > nodes.length) throw new Error("circular link")
+  }
+
   function computeNodeDepths({nodes}) {
     const n = nodes.length;
     let current = new Set(nodes);
@@ -207,6 +239,8 @@ export default function Sankey() {
     }
     return columns;
   }
+
+
 
   function initializeNodeBreadths(columns) {
     const ky = min(columns, c => (y1 - y0 - (c.length - 1) * py) / sum(c, value));

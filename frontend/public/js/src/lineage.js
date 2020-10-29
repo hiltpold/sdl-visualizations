@@ -4,18 +4,24 @@ import { scaleSequential, scaleOrdinal } from "../contrib/d3-scale/src/index";
 import {interpolateViridis} from "../contrib/d3-scale-chromatic/src/index"
 import {width, height, numberFormat } from "./config";
 
+
+export const nodeSorter = (l1, l2) => { 
+    return l2.value - l1.value; 
+}
+
+export const linkSorter = (n1, n2) => { 
+    return n2.value - n1.value; 
+}
+
 export const createLineage = (nodes, links, sankeyChart) => {
 
   const data = {nodes: nodes, links: links};
   console.log("data", data);
 
-  // init sankey generator
-  function nodeSorter(n1, n2) {
-    return n2.value + n1.value; // smaller pos first
-  }
   const sankeyObj = sankey().nodeId(d => d.name)
     //.nodeAlign(d => d.depth)
     //.nodeSort(nodeSorter)
+    //.linkSort(linkSorter)
     .nodeWidth(15)
     .nodePadding(10)
     .size([width, height])
@@ -30,7 +36,6 @@ export const createLineage = (nodes, links, sankeyChart) => {
   const colorGenerator = scaleSequential().domain([1, nodes.length]).interpolator(interpolateViridis);
   const colorScale = nodes.map((x,i)=>{return colorGenerator(i)});
   const color = scaleOrdinal(colorScale);
-  
 
   const node = sankeyChart.selectAll("rect")
     .data(nodes)
