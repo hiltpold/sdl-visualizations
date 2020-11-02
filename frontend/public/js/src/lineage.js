@@ -31,29 +31,34 @@ export const createLineage = (nodes, links, sankeyChart) => {
   // generate layocomputeNodeDeut
   const layout = sankeyObj(data);
   //console.log("layout", layout);
+  const realNodes = layout.nodes.filter((node) => node.group != "virtual")
+  const virtualNodes = layout.nodes.filter((node) => node.group == "virtual")
 
-  const colorGenerator = scaleSequential().domain([1, nodes.length]).interpolator(interpolateViridis);
-  const colorScale = nodes.map((x,i)=>{return colorGenerator(i)});
+
+  const colorGenerator = scaleSequential().domain([1, realNodes.length]).interpolator(interpolateViridis);
+  const colorScale = realNodes.map((x,i)=>{return colorGenerator(i)});
   const color = scaleOrdinal(colorScale);
-  const filtered = nodes.filter(l=>l.group!="virtual");
-  const node = sankeyChart.selectAll("rect")
+  console.log("realNodes", colorScale)
+  const node = sankeyChart
+    .append("g")
+    .selectAll("rect")
     .data(layout.nodes)
-    .join("rect")
+      .join("rect")
       .attr("x", d => d.x0)
       .attr("y", d => d.y0)
       .attr("height", d => d.y1 - d.y0)
       .attr("width", d => d.x1 - d.x0)
-      .attr("fill",  d => color(d.category === undefined ? d.name : d.category))
+      .attr("fill",  d => d.group == "virtual" ? "#000" : color(d.category === undefined ? d.name : d.category))
     .append("title")
     .text(d => `${d.name}\n${numberFormat(d.value)}`);
   
-    const link = sankeyChart.append("g")
-      .attr("fill", "none")
-      .attr("stroke-opacity", 0.5)
-      .selectAll("g")
-      .data(layout.links)
-      .join("g")
-      .style("mix-blend-mode", "multiply");
+  const link = sankeyChart.append("g")
+    .attr("fill", "none")
+    .attr("stroke-opacity", 0.5)
+    .selectAll("g")
+    .data(layout.links)
+    .join("g")
+    .style("mix-blend-mode", "multiply");
      
     link.append("path")
     .attr("d", sankeyLinkHorizontal())

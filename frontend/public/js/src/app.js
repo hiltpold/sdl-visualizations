@@ -35,7 +35,7 @@ const svg = rootElement
   .attr("preserveAspectRatio", "xMinYMin meet");
 
 const sankeyChart = svg
-  .append("g")
+ // .append("g")
   .attr("height", viewHeight)
   .attr("width", viewWidth);
 
