@@ -15,7 +15,7 @@ export const linkSorter = (n1, n2) => {
 export const createLineage = (nodes, links, sankeyChart) => {
 
   const data = {nodes: nodes, links: links};
-  console.log("data", data);
+  //console.log("data", data);
 
   const sankeyObj = sankey().nodeId(d => d.name)
     .nodeAlign(d => d.depth)
@@ -38,7 +38,6 @@ export const createLineage = (nodes, links, sankeyChart) => {
   const colorGenerator = scaleSequential().domain([1, realNodes.length]).interpolator(interpolateViridis);
   const colorScale = realNodes.map((x,i)=>{return colorGenerator(i)});
   const color = scaleOrdinal(colorScale);
-  console.log("realNodes", colorScale)
   const node = sankeyChart
     .append("g")
     .selectAll("rect")
@@ -48,7 +47,7 @@ export const createLineage = (nodes, links, sankeyChart) => {
       .attr("y", d => d.y0)
       .attr("height", d => d.y1 - d.y0)
       .attr("width", d => d.x1 - d.x0)
-      .attr("fill",  d => d.group == "virtual" ? "#000" : color(d.category === undefined ? d.name : d.category))
+      .attr("fill",  d => d.group == "virtual" ? "#aaa" : color(d.category === undefined ? d.name : d.category))
     .append("title")
     .text(d => `${d.name}\n${numberFormat(d.value)}`);
   
