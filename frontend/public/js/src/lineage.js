@@ -4,7 +4,6 @@ import { scaleSequential, scaleOrdinal } from "../contrib/d3-scale/src/index";
 import {interpolateViridis} from "../contrib/d3-scale-chromatic/src/index"
 import {width, height, numberFormat } from "./config";
 
-
 export const nodeSorter = (l1, l2) => { 
     return l2.value - l1.value; 
 }
@@ -19,7 +18,7 @@ export const createLineage = (nodes, links, sankeyChart) => {
   console.log("data", data);
 
   const sankeyObj = sankey().nodeId(d => d.name)
-    //.nodeAlign(d => d.depth)
+    .nodeAlign(d => d.depth)
     //.nodeSort(nodeSorter)
     //.linkSort(linkSorter)
     .nodeWidth(15)
@@ -32,13 +31,13 @@ export const createLineage = (nodes, links, sankeyChart) => {
   // generate layocomputeNodeDeut
   const layout = sankeyObj(data);
   //console.log("layout", layout);
-  
+
   const colorGenerator = scaleSequential().domain([1, nodes.length]).interpolator(interpolateViridis);
   const colorScale = nodes.map((x,i)=>{return colorGenerator(i)});
   const color = scaleOrdinal(colorScale);
-
+  const filtered = nodes.filter(l=>l.group!="virtual");
   const node = sankeyChart.selectAll("rect")
-    .data(nodes)
+    .data(layout.nodes)
     .join("rect")
       .attr("x", d => d.x0)
       .attr("y", d => d.y0)
@@ -52,7 +51,7 @@ export const createLineage = (nodes, links, sankeyChart) => {
       .attr("fill", "none")
       .attr("stroke-opacity", 0.5)
       .selectAll("g")
-      .data(links)
+      .data(layout.links)
       .join("g")
       .style("mix-blend-mode", "multiply");
      
@@ -62,19 +61,17 @@ export const createLineage = (nodes, links, sankeyChart) => {
     .attr("stroke-width", d => Math.max(1, d.width));
 
     link.append("title").text(d => `${d.source.name} → ${d.target.name}\n${numberFormat(d.value)}`);
-
     sankeyChart.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 10)
     .selectAll("text")
-    .data(nodes)
+    .data(layout.nodes)
     .join("text")
       .attr("x", d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
       .attr("y", d => (d.y1 + d.y0) / 2)
       .attr("dy", "0.35em")
       .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
       .text(d => d.name);
-     
   console.log("< LINEAGE CREATED >")
 }
-export default createLineage;
+export default createLineage

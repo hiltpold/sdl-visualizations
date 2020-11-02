@@ -42,10 +42,12 @@ function computeLinkBreadths({nodes}) {
     let y0 = node.y0;
     let y1 = y0;
     for (const link of node.sourceLinks) {
+      //console.log(link.index, link.source.name, link.target.name, link.width);
       link.y0 = y0 + link.width / 2;
       y0 += link.width;
     }
     for (const link of node.targetLinks) {
+      //console.log(link.index, link.source.name, link.target.name, link.width);
       link.y1 = y1 + link.width / 2;
       y1 += link.width;
     }
@@ -70,10 +72,11 @@ export default function Sankey() {
     computeNodeValues(graph);
     computeNodeDepths(graph);
     //computeNodeDepthsKahn(graph);
+    normalizeGraph(graph);
     computeNodeHeights(graph);
     computeNodeBreadths(graph);
     computeLinkBreadths(graph);
-    //
+    
     return graph;
   }
 
@@ -179,11 +182,97 @@ export default function Sankey() {
         if(target.inDegree == 0) {
           currentNodes.push(target);
           target.depth = source.depth + 1 ;
-          console.log(target);
         }
       }
     }
     if(visitedNodes > nodes.length) throw new Error("circular link")
+  }
+
+  //
+  // this functions adds virtual nodes and links to the existing graph
+  //
+  function normalizeGraph(graph){
+    // compute layers
+    // TODO: make better layer calculation
+    const layers= [];
+    const nLayer = max(graph.nodes, d => d.depth) + 1;
+    for(let k=0; k<nLayer; k++){
+      layers.push(graph.nodes.filter(n => n.depth === k));
+    }
+    const lastNodeIdx = graph.nodes.length;
+    const lastLinkIdx = graph.links.length;
+    let virtualNodeIdx = lastNodeIdx;
+    let virtualLinkidx = lastLinkIdx
+
+    console.log(`< SANKEY HAS ${nLayer} LAYERS >`)
+    
+    // swipe through each layer
+    for(let i=0; i< nLayer-1; i++) {
+      console.log(`LAYER ${i} ------------------------------------------------------------`)
+      const currentLayer = layers[i];
+      const nextLayer = layers[i+1];
+      // find nodes, where target is not in the next layer
+
+      for(const source of currentLayer){
+        let virtualNode = {};
+        let virtualSourceLink = {};
+        let virtualTargetLink = {}; 
+        let addVirtualNode = false;         
+        for(const {target} of source.sourceLinks) {
+          // check if target is in nextLyer
+          addVirtualNode = !nextLayer.includes(target);
+          
+          if(addVirtualNode) {
+            
+            virtualNode = {
+              name : `virtual_${virtualNodeIdx}`, 
+              index: virtualNodeIdx, 
+              depth: i+1, 
+              group: "virtual",
+              value: 1
+            };
+            virtualNodeIdx+=1;
+
+            virtualSourceLink = { source: virtualNode, target: target, index : virtualLinkidx, value: 1};
+            virtualLinkidx+=1;
+            virtualTargetLink = { source: source, target: virtualNode, index : virtualLinkidx, value: 1 };
+            virtualLinkidx+=1;
+
+            virtualNode.sourceLinks = [ virtualSourceLink ];
+            virtualNode.targetLinks = [ virtualTargetLink ];
+            
+            // remove original link from the graph
+            graph.links = graph.links.filter( (link) => {
+              return (!(link.source === source && link.target === target));
+            });
+            
+            // add virtual node and associated links to the graph 
+            graph.nodes.push(virtualNode);            
+            graph.links.push(virtualSourceLink);            
+            graph.links.push(virtualTargetLink);            
+
+            // updata local link data structure
+            source.sourceLinks = source.sourceLinks.concat(virtualTargetLink);
+            target.targetLinks = target.targetLinks.concat(virtualSourceLink);
+
+            target.targetLinks = target.targetLinks.filter((link)=> {
+              return (!(link.source.name === source.name && link.target.name === target.name));
+            });
+
+            source.sourceLinks = source.sourceLinks.filter((link) =>{
+              return (!(link.source.name === source.name && link.target.name === target.name));
+            });
+            layers[i+1].push(virtualNode);
+          }
+        }
+      }
+      console.log("---------------------------------------------------------------------");
+    }
+
+    //console.log("GNODE" , graph.nodes);
+    //console.log("GLINKS" , graph.links);
+    
+    console.log("< GRAPH NORMALIZED >");
   }
 
   function computeNodeDepths({nodes}) {
@@ -239,8 +328,6 @@ export default function Sankey() {
     }
     return columns;
   }
-
-
 
   function initializeNodeBreadths(columns) {
     const ky = min(columns, c => (y1 - y0 - (c.length - 1) * py) / sum(c, value));

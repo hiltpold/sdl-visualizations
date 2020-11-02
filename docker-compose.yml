@@ -2,7 +2,7 @@ version: "3.8"
 services:
     webserver:
         image: nginx:mainline-alpine
-        container_name: weberver
+        container_name: webserver
         ports:
         - 8080:80
         volumes:

@@ -5,6 +5,26 @@ import { createLineage } from "./lineage";
 
 import {viewWidth, viewHeight} from "./config";
 
+/*
+let username = "admin";
+let password = "admin";
+
+fetch("http://localhost:21000/api/atlas/v2/search/basic?typeName=DB", { 
+  mode: 'no-cors', 
+  headers: new Headers({"Authorization": `Basic ${window.btoa(`${username}:${password}`)}`
+  }),
+}).then((res)=> console.log(res));
+*/
+/*
+let username = "admin";
+let password = "admin";
+
+fetch("http://localhost:21000/api/atlas/v2/search/basic?typeName=DB", { 
+  mode: 'no-cors', 
+  headers: new Headers({"Authorization": `Basic ${window.btoa(`${username}:${password}`)}`
+  }),
+}).then((res)=> console.log(res));
+*/
 
 const rootElement = select("#sdl-lineage-container");
 
