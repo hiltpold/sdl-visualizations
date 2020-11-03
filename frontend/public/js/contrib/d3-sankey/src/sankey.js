@@ -74,6 +74,7 @@ export default function Sankey() {
     //computeNodeDepthsKahn(graph);
     computeNodeLayers(graph);
     normalizeGraph(graph);
+    minimizeCrossings(graph);
     computeNodeHeights(graph);
     computeNodeBreadths(graph);
     computeLinkBreadths(graph);
@@ -195,6 +196,11 @@ export default function Sankey() {
     for(let k=0; k<nLayer; k++){
       layers.push(nodes.filter(n => n.layer === k));
     }
+    if (sort) for (const layer of layers) {
+      //console.log(sort)
+      layer.sort(sort);
+    }
+
     return layers;
   }
 
@@ -244,12 +250,7 @@ export default function Sankey() {
   //
   function normalizeGraph(graph) {
     const layers = getLayers(graph)//computeNodeLayers(graph);
-    console.log(layers);
-    // compute layers
-    // TODO: make better layer calculation
-
-    /*
-    */
+    
     let virtualNodeIdx = graph.nodes.length;
     let virtualLinkIdx = graph.links.length;
 
@@ -257,7 +258,7 @@ export default function Sankey() {
     console.log(`< SANKEY HAS ${nLayer} LAYERS >`)
     // sweep through each layer and add virtual links and nodes
     for(let i=0; i< nLayer-1; i++) {
-      console.log("LAYER ", i)
+      console.log(`< LAYER ${i} >`)
       const currentLayer = layers[i];
       const nextLayer = layers[i+1];
       // find nodes, where target is not in the next layer
@@ -272,11 +273,112 @@ export default function Sankey() {
         }
       }
     }
-
     //console.log("GNODE" , graph.nodes);
     //console.log("GLINKS" , graph.links);
-    
     console.log("< GRAPH NORMALIZED >");
+  }
+
+  function initOrdering(layers, sortFunction){
+    // init ordering
+    const firstLayer = layers[0];
+    firstLayer.forEach((node, idx) => node.position = idx);
+    
+    for(let i=0; i<layers.length-1;i++){
+      const currentLayer = layers[i];
+      let position = 0;
+      for(const source of currentLayer) {
+        for( const {target} of source.sourceLinks){    
+          //console.log(source.name, target.name)
+          if(target.position === undefined) {
+            target.position = position;
+            position+=1;
+          }
+        }
+      }
+      if(sortFunction) {
+        layers[i] = layers[i].sort(sortFunction);
+      }
+    }
+    return layers;
+
+  }
+
+  //
+  // brute-force ..
+  //
+  function countCrossings(layer1, layer2) {
+    let count = 0;
+    for(const target of layer2) {
+      for(const targetLink of target.targetLinks){
+        for(const source of layer1){
+          for(const sourceLink of source.sourceLinks) {
+            if(targetLink.source === sourceLink.source && targetLink.target === sourceLink.target) {
+             continue;
+            }
+            if((targetLink.source.position > sourceLink.source.position && targetLink.target.position < sourceLink.target.position ) ||
+                targetLink.source.position < sourceLink.source.position && targetLink.target.position > sourceLink.target.position ) {
+                  count+=1;
+            }
+          }
+        }
+      } 
+    }
+    if(count % 2 !== 0) throw new Error("Edge count must be even!") 
+    return count/2; 
+  }
+  
+  function countCrossings2(layer1, layer2) {
+    let links = [];
+    // get all links between the two layers
+    layer2.forEach((node) => {
+      links = links.concat(node.targetLinks);
+    });
+    // sort links lexicographically
+    links.sort((l1, l2) => {
+      return l1.source.position - l2.source.position || l1.target.position - l2.target.position;
+    });
+    const targets = links.map((link) => {
+      return link.target.position;
+    });
+    // calculate inversion number
+    let inversions = 0;
+    for(let i=0;i < targets.length;i++) {
+      for(let j=i+1; j < targets.length;j++){
+        if(targets[i] > targets[j]) {
+          inversions++;
+        }
+      }
+    }
+    return inversions;
+  }
+
+  function minimizeCrossings(graph) {
+    sort = (a,b) => {return a.position - b.position}
+    const sortFunc = (a,b) => {return a.position - b.position}
+    const layers = initOrdering(getLayers(graph), sortFunc);
+ 
+    console.log("< LAYERS INIT:", layers)
+    let bestOrdering = layers;
+    // sweep from left to rightcrossing
+    for(let i=1; i<layers.length;i++) {
+      const previousLayer = layers[i-1];
+      const currentLayer = layers[i];
+      
+      // median calculation
+      for(const node of currentLayer){
+
+      }
+      // crossing counging
+      const crossings = countCrossings2(previousLayer, currentLayer);
+      console.log(`Crossings from Layer ${i-1} to ${i}: ${crossings}`);
+    }
+
+    // init ordering
+    //graph.nodes = graph.nodes.sort(;
+    console.log(layers);
+    console.log("< CROSSING MINIMIZED >");
+
+
   }
 
   function computeNodeDepths({nodes}) {
@@ -314,16 +416,6 @@ export default function Sankey() {
       next = new Set;
     }
   }
-
-  function getNodeLayers({nodes}) {
-    const layers= [];
-    const nLayer = max(nodes, d => d.depth) + 1;
-    for(let k=0; k < nLayer; k++){
-      layers.push(nodes.filter(n => n.layer === k));
-    }
-    return layers;
-  }
-
 
   function computeNodeLayers({nodes}) {
     const x = max(nodes, d => d.depth) + 1;
@@ -370,14 +462,17 @@ export default function Sankey() {
   function computeNodeBreadths(graph) {
     //const columns = computeNodeLayers(graph);
     const columns = getLayers(graph);
+    console.log(columns);
     py = Math.min(dy, (y1 - y0) / (max(columns, c => c.length) - 1));
     initializeNodeBreadths(columns);
+    /*
     for (let i = 0; i < iterations; ++i) {
       const alpha = Math.pow(0.99, i);
       const beta = Math.max(1 - alpha, (i + 1) / iterations);
-      //relaxRightToLeft(columns, alpha, beta);
-      //relaxLeftToRight(columns, alpha, beta);
+      relaxRightToLeft(columns, alpha, beta);
+      relaxLeftToRight(columns, alpha, beta);
     }
+    */
   }
 
   // Reposition each node based on its incoming (target) links.
