@@ -4,6 +4,9 @@ import node from "../../d3-selection/src/selection/node";
 import {justify} from "./align.js";
 import constant from "./constant.js";
 
+//import { Map, fromJS } from "../../immutable/dist/immutable.es"
+import deepClone from "../../../../js/src/clone"
+
 function ascendingSourceBreadth(a, b) {
   return ascendingBreadth(a.source, b.source) || a.index - b.index;
 }
@@ -351,66 +354,99 @@ export default function Sankey() {
     }
     return inversions;
   }
+
+  function sweepLeftToRight(layers, func) {
+
+  }
   
-  function medianValue(node, layer) {
-    let srcNodes = node.targetLinks.map((link) => link.source.position).sort((pos1, pos2) => pos1.position-pos2.position);
-    const l = srcNodes.length;
+  function sweepRightToLeft(layers, func) {
+
+  }
+  
+  function medianValue(node, source=false) {
+    let nodes = [];
+    if(!source){
+      nodes = node.targetLinks.map((link) => link.source.position).sort((pos1, pos2) => pos1.position-pos2.position);
+    } else {
+      nodes = node.sourceLinks.map((link) => link.target.position).sort((pos1, pos2) => pos1.position-pos2.position);
+    }
+    const l = nodes.length;
     const m = Math.floor(l / 2);
-    return l%2 !== 0 ? srcNodes[m] : (srcNodes[m-1] + srcNodes[m]) / 2;
+    if(l === 0){
+      return -1;
+    } else if (l%2 === 1){
+      return nodes[m];
+    } else if (l===2) {
+      return (nodes[0] + nodes[1]) / 2;
+    } else {
+      const left = nodes[m-1]-nodes[0];
+      const right = nodes[l-1]-nodes[m];
+      return (nodes[m-1]*right + nodes[m]*left) / (left+right);
+    }
   }
 
   function minimizeCrossings(graph) {
     sort = (a,b) => {return a.position - b.position}
     const sortFunc = (a,b) => {return a.position - b.position}
-    const layers2 = initOrdering(getLayers(graph), sortFunc);
-    let layers = layers2;/*.map(x => {
-      return x.map(y => JSON.parse(JSON.stringify(y)) );
-    });
-   */
-    console.log("< LAYERS INIT:", layers)
-    let bestOrdering = layers.map(x => {
-      //return x.map(y => Object.assign({},y));
-      return x.map(y => Object.freeze(y));
-    });
-    console.log("CURRENT: ", layers)
 
-    // sweep from left to rightcrossing
-    for(let iteration=0;iteration<1;iteration++){
+    let layers = initOrdering(getLayers(graph), sortFunc);
+    let bestOrdering = deepClone(layers);
+
+    // sweep 
+
+    for(let iteration=0;iteration<22;iteration++) {
+    
       // median calculation
-      for(let i=1; i<layers.length;i++) {
-        const previousLayer = layers[i-1];
-        const currentLayer = layers[i];
-        
-        for(const node of currentLayer){
-          node.median = medianValue(node, i-1)
+      if(iteration%2 === 0){
+        console.log("< MEDIAN - SWEEP FROM LEFT TO RIGHT >")
+        for(let i=1; i<layers.length;i++) {
+          //const previousLayer = layers[i-1];
+          const currentLayer = layers[i];
+          console.log("1: ", currentLayer.map(x=>`${x.name}|${x.median}`));
+          
+          for(const node of currentLayer){
+            node.median = medianValue(node, false)
+          }
+          const sortedCurrentLayer = currentLayer.sort((a,b) => a.median - b.median);
+          console.log("1: ", sortedCurrentLayer.map(x=>`${x.name}|${x.median}`));
+          
+          // update position according to median
+          sortedCurrentLayer.forEach((n,idx) => n.position=idx);
         }
-        const sortedCurrentLayer = currentLayer.sort((a,b) => a.median - b.median);
-        // update position according to median
-        sortedCurrentLayer.forEach((n,idx) => n.position=idx);
-        console.log("SORTED: ", sortedCurrentLayer)
-        console.log(sortedCurrentLayer.map(x=> `${x.name} ${x.position}`));
-        console.log(bestOrdering[i].map((x) => `${x.name} ${x.position}`));
-        // crossing counging
-        const crossings = countCrossings2(sortedCurrentLayer);
-        const crossings2 = countCrossings2(bestOrdering[i]);
-        console.log(`Crossings from Layer ${i-1} to ${i}: ${crossings}`);
-        console.log(`Crossings from Layer ${i-1} to ${i}: ${crossings2}`);
+      } else {
+        console.log("< MEDIAN - SWEEP FROM RIGHT TO LEFT >")
+        for(let i=layers.length-2; i>=0;i--) {
+          //const previousLayer = layers[i-1];
+          const currentLayer = layers[i];
+          console.log("2: ", currentLayer.map(x=>`${x.name}|${x.median}`));
+          for(const node of currentLayer){
+            node.median = medianValue(node, true)
+          }
+          const sortedCurrentLayer = currentLayer.sort((a,b) => a.median - b.median);
+          console.log("2: ", sortedCurrentLayer.map(x=>`${x.name}|${x.median}`));
+          
+          // update position according to median
+          sortedCurrentLayer.forEach((n,idx) => n.position=idx);
+        }
       }
-      //
       let crossingBest = 0;
       let crossingCurrent = 0;
       for(let i=1; i<layers.length;i++) {
         crossingCurrent += countCrossings2(layers[i]);
         crossingBest += countCrossings2(bestOrdering[i]);
       }
-      console.log(bestOrdering);
       console.log(layers);
       console.log("< TOTAL CROSSINGS BEST: ", crossingBest );
       console.log("< TOTAL CROSSINGS CURRENT: ", crossingCurrent );
+      if(crossingBest > crossingCurrent) {
+        console.log("< SWAP CURRENT WITH BEST >")
+        bestOrdering = deepClone(layers);
+      }
     }
-    // init ordering
-    //graph.nodes = graph.nodes.sort(;
-    //console.log(layers);
+
+    graph.nodes = bestOrdering.flat();
+    graph.links = graph.nodes.map(node => node.sourceLinks).flat();
+    
     console.log("< CROSSING MINIMIZED >");
   }
 

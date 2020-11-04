@@ -4,3 +4,6 @@
 sdl-viz/
 .ipynb_checkpoints
 node_modules/
+
+package-lock.json
+package.json
