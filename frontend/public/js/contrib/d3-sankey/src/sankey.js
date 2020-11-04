@@ -325,7 +325,7 @@ export default function Sankey() {
         }
       } 
     }
-    if(count % 2 !== 0) throw new Error("Edge count must be even!") 
+    if(count % 2 !== 0) throw new Error("...must be even!") 
     return count/2; 
   }
   
@@ -354,20 +354,24 @@ export default function Sankey() {
     return inversions;
   }
 
-  function sweepLeftToRight(layers, func) {
+  function sweepLeftToRight(layers, layerFunc) {
+    layers.forEach((layer) => {
+      layerFunc(layer);
+    });
+  }
+  
+  function sweepRightToLeft(layers, func, sort) {
 
   }
   
-  function sweepRightToLeft(layers, func) {
-
-  }
-  
-  function medianValue(node, source=false) {
+  function medianValue(node, direction="incoming") {
     let nodes = [];
-    if(!source){
+    if(direction === "incoming"){
       nodes = node.targetLinks.map((link) => link.source.position).sort((pos1, pos2) => pos1.position-pos2.position);
-    } else {
+    } else if (direction === "outgoing") {
       nodes = node.sourceLinks.map((link) => link.target.position).sort((pos1, pos2) => pos1.position-pos2.position);
+    } else {
+      throw Error("< ERROR: CANNOT CALCULATE ERROR ON UNKNOWN DIRECTION...");
     }
     const l = nodes.length;
     const m = Math.floor(l / 2);
@@ -391,27 +395,21 @@ export default function Sankey() {
     let layers = initOrdering(getLayers(graph), sortFunc);
     let bestOrdering = deepClone(layers);
 
-    // sweep 
+    const medianSortLayerFunc = (layer, direction="incoming") => {
+      layer.forEach((node) => {
+        node.median = medianValue(node, direction);
+      });
+      const sortedLayer = layer.sort((a,b) => a.median - b.median);
+      // update position according to median
+      sortedLayer.forEach((n,idx) => n.position=idx);
+    };
 
-    for(let iteration=0;iteration<22;iteration++) {
-    
+    // sweep 
+    for(let iteration=0;iteration<20;iteration++) {
       // median calculation
       if(iteration%2 === 0){
         console.log("< MEDIAN - SWEEP FROM LEFT TO RIGHT >")
-        for(let i=1; i<layers.length;i++) {
-          //const previousLayer = layers[i-1];
-          const currentLayer = layers[i];
-          console.log("1: ", currentLayer.map(x=>`${x.name}|${x.median}`));
-          
-          for(const node of currentLayer){
-            node.median = medianValue(node, false)
-          }
-          const sortedCurrentLayer = currentLayer.sort((a,b) => a.median - b.median);
-          console.log("1: ", sortedCurrentLayer.map(x=>`${x.name}|${x.median}`));
-          
-          // update position according to median
-          sortedCurrentLayer.forEach((n,idx) => n.position=idx);
-        }
+        sweepLeftToRight(layers, medianSortLayerFunc);
       } else {
         console.log("< MEDIAN - SWEEP FROM RIGHT TO LEFT >")
         for(let i=layers.length-2; i>=0;i--) {
@@ -419,7 +417,7 @@ export default function Sankey() {
           const currentLayer = layers[i];
           console.log("2: ", currentLayer.map(x=>`${x.name}|${x.median}`));
           for(const node of currentLayer){
-            node.median = medianValue(node, true)
+            node.median = medianValue(node, "outgoing")
           }
           const sortedCurrentLayer = currentLayer.sort((a,b) => a.median - b.median);
           console.log("2: ", sortedCurrentLayer.map(x=>`${x.name}|${x.median}`));
@@ -506,6 +504,7 @@ export default function Sankey() {
   }
 
   function initializeNodeBreadths(columns) {
+    console.log(columns)
     const ky = min(columns, c => (y1 - y0 - (c.length - 1) * py) / sum(c, value));
     for (const nodes of columns) {
       let y = y0;
