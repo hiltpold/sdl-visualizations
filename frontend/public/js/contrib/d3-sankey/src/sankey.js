@@ -4,7 +4,6 @@ import node from "../../d3-selection/src/selection/node";
 import {justify} from "./align.js";
 import constant from "./constant.js";
 
-//import { Map, fromJS } from "../../immutable/dist/immutable.es"
 import deepClone from "../../../../js/src/clone"
 
 function ascendingSourceBreadth(a, b) {
