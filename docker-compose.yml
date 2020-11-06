@@ -11,7 +11,7 @@ services:
         restart: unless-stopped
     atlas:
         image: sburn/apache-atlas
-        container_name: apache-atlas
+        container_name: atlas
         ports: 
             - "21000:21000"
         command: ["python", "/opt/apache-atlas-2.1.0/bin/atlas_start.py"]

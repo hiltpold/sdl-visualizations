@@ -11,3 +11,6 @@ export const width = viewWidth
 export const height = viewHeight;
 
 export const numberFormat = format(",.0f");
+
+export const username = "admin";
+export const password = "admin";

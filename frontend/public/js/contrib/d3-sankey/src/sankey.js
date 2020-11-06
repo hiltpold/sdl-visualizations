@@ -66,7 +66,6 @@ export default function Sankey() {
   let nodes = defaultNodes;
   let links = defaultLinks;
   let iterations = 6;
-  let nLayers = undefined; 
 
   function sankey() {
     const graph = {nodes: nodes.apply(null, arguments), links: links.apply(null, arguments)};
@@ -305,30 +304,6 @@ export default function Sankey() {
 
   }
 
-  //
-  // brute-force ..
-  //
-  function countCrossings(layer1, layer2) {
-    let count = 0;
-    for(const target of layer2) {
-      for(const targetLink of target.targetLinks){
-        for(const source of layer1){
-          for(const sourceLink of source.sourceLinks) {
-            if(targetLink.source === sourceLink.source && targetLink.target === sourceLink.target) {
-             continue;
-            }
-            if((targetLink.source.position > sourceLink.source.position && targetLink.target.position < sourceLink.target.position ) ||
-                targetLink.source.position < sourceLink.source.position && targetLink.target.position > sourceLink.target.position ) {
-                  count+=1;
-            }
-          }
-        }
-      } 
-    }
-    if(count % 2 !== 0) throw new Error("...must be even!") 
-    return count/2; 
-  }
-  
   function countCrossings2(layer) {
     let links = [];
     // get all links between the two layers
@@ -389,6 +364,9 @@ export default function Sankey() {
   }
 
   function minimizeCrossings(graph) {
+    //linkSort = (a,b) => {return a.position - b.position}
+
+
     sort = (a,b) => {return a.position - b.position}
     const sortFunc = (a,b) => {return a.position - b.position}
 
@@ -401,11 +379,13 @@ export default function Sankey() {
       });
       const sortedLayer = layer.sort((a,b) => a.median - b.median);
       // update position according to median
-      sortedLayer.forEach((n,idx) => n.position=idx);
+      sortedLayer.forEach((n,idx) => {
+        n.position=idx;
+      });
     };
 
     // sweep 
-    for(let iteration=0;iteration<20;iteration++) {
+    for(let iteration=0;iteration<24;iteration++) {
       // median calculation
       if(iteration%2 === 0){
         console.log("< MEDIAN - SWEEP FROM LEFT TO RIGHT >")
@@ -423,7 +403,9 @@ export default function Sankey() {
           console.log("2: ", sortedCurrentLayer.map(x=>`${x.name}|${x.median}`));
           
           // update position according to median
-          sortedCurrentLayer.forEach((n,idx) => n.position=idx);
+          sortedCurrentLayer.forEach((n,idx) => {
+            n.position=idx;
+          });
         }
       }
       let crossingBest = 0;
@@ -440,10 +422,16 @@ export default function Sankey() {
         bestOrdering = deepClone(layers);
       }
     }
-
+    
     graph.nodes = bestOrdering.flat();
     graph.links = graph.nodes.map(node => node.sourceLinks).flat();
-    
+    /*
+    sweepLeftToRight(bestOrdering, (layer) => {
+      layer.forEach((n) => {
+        reorderLinks(n);
+      });
+    });
+    */
     console.log("< CROSSING MINIMIZED >");
   }
 
@@ -532,14 +520,14 @@ export default function Sankey() {
     //console.log(columns);
     py = Math.min(dy, (y1 - y0) / (max(columns, c => c.length) - 1));
     initializeNodeBreadths(columns);
-    /*
+    
     for (let i = 0; i < iterations; ++i) {
       const alpha = Math.pow(0.99, i);
       const beta = Math.max(1 - alpha, (i + 1) / iterations);
       relaxRightToLeft(columns, alpha, beta);
       relaxLeftToRight(columns, alpha, beta);
     }
-    */
+  
   }
 
   // Reposition each node based on its incoming (target) links.

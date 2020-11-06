@@ -3,28 +3,53 @@ import {select} from "../contrib/d3-selection/src/index";
 import dataFromUrls from "./csv";
 import { createLineage } from "./lineage";
 
-import {viewWidth, viewHeight} from "./config";
+import {viewWidth, viewHeight, username, password} from "./config";
+import fetchAsync from "./backend";
 
 /*
-let username = "admin";
-let password = "admin";
-
-fetch("http://localhost:21000/api/atlas/v2/search/basic?typeName=DB", { 
-  mode: 'no-cors', 
-  headers: new Headers({"Authorization": `Basic ${window.btoa(`${username}:${password}`)}`
-  }),
-}).then((res)=> console.log(res));
+const sdlActionsGuidUrl = "http://localhost:8080/api/atlas/entities?type=hive_table";
+const getEntitiesByTypeUrl = (type) => {
+  return (type !== undefined || type.length > 0) ? sdlActionsGuidUrl.concat
+}
 */
-/*
-let username = "admin";
-let password = "admin";
 
-fetch("http://localhost:21000/api/atlas/v2/search/basic?typeName=DB", { 
-  mode: 'no-cors', 
-  headers: new Headers({"Authorization": `Basic ${window.btoa(`${username}:${password}`)}`
-  }),
-}).then((res)=> console.log(res));
-*/
+const sdlActionsUrl = "http://localhost:8080/api/atlas/v2/search/dsl?typeName=sdl_action";
+const lineageEndPoint = "http://localhost:8080/api/atlas/v2/lineage/";
+
+fetchAsync(sdlActionsUrl, username, password).then((data) => {
+  const entities = data.entities;
+  const entityGuidLu = entities.reduce((acc, entity) => {
+    acc[entity.attributes.name] = entity.guid;
+    return acc;
+  }, {});
+  const lineage = Object.keys(entityGuidLu).map((value) => {
+    console.log(lineageEndPoint.concat(entityGuidLu[value])); 
+    return fetchAsync(lineageEndPoint.concat(entityGuidLu[value]), username, password);
+  });
+  return Promise.all(lineage);
+}).then((lineages) =>{
+  console.log(lineages);
+  const tmpLineage = lineages[0];
+  const lu = Object.keys(tmpLineage.guidEntityMap).reduce((acc, id) => {
+    acc[id]= tmpLineage.guidEntityMap[id].typeName;
+    return acc;
+  }, {});
+  console.log(lu);
+  const nodeIds = Object.keys(tmpLineage.guidEntityMap);
+  const nodes = nodeIds.map((id) => { 
+    return {name: lu[id] }
+  });
+
+  const links = tmpLineage.relations.map((relation) => {
+    return { source: lu[relation.fromEntityId], target: lu[relation.toEntityId], value: 1 }
+  });
+  console.log(nodes);
+  console.log(links);
+
+  createLineage(nodes, links, sankeyChart);
+}).catch((error) => {
+  console.log(error);
+});
 
 const rootElement = select("#sdl-lineage-container");
 
@@ -51,7 +76,7 @@ Promise.all(loadData).then((data) => {
   console.log("< LINKS >");
   console.log(links);
   */
-  createLineage(nodes, links, sankeyChart);
+  //createLineage(nodes, links, sankeyChart);
 
 }).catch((error) => {
   console.log(error);

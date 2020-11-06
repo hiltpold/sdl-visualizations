@@ -1,9 +1,7 @@
 
-export const fetchAsync = async (url) => {
-    let response = await fetch(url);
-    let data = await response.text();
-    let parsedData = await  JSON.parse(data);
-    return parsedData;
+export const fetchAsync = async (url, username, password) => {
+    const response = await fetch(url, { headers: new Headers({"Authorization": `Basic ${window.btoa(`${username}:${password}`)}`})});
+    return response.json();
 }
 
-export default dataFromUrls;
+export default fetchAsync;
