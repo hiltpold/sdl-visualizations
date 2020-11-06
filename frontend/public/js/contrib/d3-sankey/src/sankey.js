@@ -385,7 +385,7 @@ export default function Sankey() {
     };
 
     // sweep 
-    for(let iteration=0;iteration<24;iteration++) {
+    for(let iteration=0;iteration<20;iteration++) {
       // median calculation
       if(iteration%2 === 0){
         console.log("< MEDIAN - SWEEP FROM LEFT TO RIGHT >")

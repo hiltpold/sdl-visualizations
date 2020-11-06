@@ -46,7 +46,7 @@ fetchAsync(sdlActionsUrl, username, password).then((data) => {
   console.log(nodes);
   console.log(links);
 
-  createLineage(nodes, links, sankeyChart);
+  //createLineage(nodes, links, sankeyChart);
 }).catch((error) => {
   console.log(error);
 });
@@ -76,7 +76,7 @@ Promise.all(loadData).then((data) => {
   console.log("< LINKS >");
   console.log(links);
   */
-  //createLineage(nodes, links, sankeyChart);
+  createLineage(nodes, links, sankeyChart);
 
 }).catch((error) => {
   console.log(error);
