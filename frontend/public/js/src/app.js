@@ -6,32 +6,44 @@ import { createLineage } from "./lineage";
 import {viewWidth, viewHeight, username, password} from "./config";
 import fetchAsync from "./backend";
 
-/*
-const sdlActionsGuidUrl = "http://localhost:8080/api/atlas/entities?type=hive_table";
-const getEntitiesByTypeUrl = (type) => {
-  return (type !== undefined || type.length > 0) ? sdlActionsGuidUrl.concat
+
+const dslQueryParams = {
+  typeName: `sdl_action`,
+  limit: 100
 }
-*/
 
-const sdlActionsUrl = "http://localhost:8080/api/atlas/v2/search/dsl?typeName=sdl_action";
-const lineageEndPoint = "http://localhost:8080/api/atlas/v2/lineage/";
+const dslEndpoint = "http://localhost:8080/api/atlas/v2/search/dsl?";
+const lineageEndpoint = "http://localhost:8080/api/atlas/v2/lineage/";
 
-fetchAsync(sdlActionsUrl, username, password).then((data) => {
-  const entities = data.entities;
-  const entityGuidLu = entities.reduce((acc, entity) => {
-    acc[entity.attributes.name] = entity.guid;
-    return acc;
-  }, {});
-  const lineage = Object.keys(entityGuidLu).map((value) => {
-    console.log(lineageEndPoint.concat(entityGuidLu[value])); 
-    return fetchAsync(lineageEndPoint.concat(entityGuidLu[value]), username, password);
+const makeQueryString = (query) => {
+  if(typeof query === "object" && query !== null) {
+    return Object.keys(query).map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(query[key])).join("&");
+  } else {
+    return ""
+  }
+}
+
+const makeUrl = (endpoint, queryString) => {
+  return endpoint+queryString
+}
+
+const dslQuery = makeUrl(dslEndpoint, makeQueryString(dslQueryParams)); 
+
+console.log(dslQuery);
+
+fetchAsync(dslQuery, username, password).then((data) => {
+  console.log(data.entities);
+  const guids = data.entities.map((x) => x.guid);
+  const lineage = guids.map((guid) => {
+    return fetchAsync(lineageEndpoint+guid, username, password);
   });
   return Promise.all(lineage);
 }).then((lineages) =>{
   console.log(lineages);
-  const tmpLineage = lineages[0];
+  
+  const tmpLineage = lineages[1];
   const lu = Object.keys(tmpLineage.guidEntityMap).reduce((acc, id) => {
-    acc[id]= tmpLineage.guidEntityMap[id].typeName;
+    acc[id]= tmpLineage.guidEntityMap[id].attributes.qualifiedName;
     return acc;
   }, {});
   console.log(lu);
@@ -46,7 +58,8 @@ fetchAsync(sdlActionsUrl, username, password).then((data) => {
   console.log(nodes);
   console.log(links);
 
-  //createLineage(nodes, links, sankeyChart);
+  createLineage(nodes, links, sankeyChart);
+  
 }).catch((error) => {
   console.log(error);
 });
@@ -67,7 +80,6 @@ const sankeyChart = svg
 const loadData = dataFromUrls;
 
 Promise.all(loadData).then((data) => {
-  console.log(data);
   const nodes = data[0].map( node => ({name: node.name, group: node.group}));
   const links = data[1].map( link => ({source: link.source, target: link.target, value: 1 }));
   /*
@@ -76,7 +88,7 @@ Promise.all(loadData).then((data) => {
   console.log("< LINKS >");
   console.log(links);
   */
-  createLineage(nodes, links, sankeyChart);
+  //createLineage(nodes, links, sankeyChart);
 
 }).catch((error) => {
   console.log(error);
