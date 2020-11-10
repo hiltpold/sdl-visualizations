@@ -8,7 +8,6 @@ const deepClone = (obj, hash = new WeakMap()) => {
     try { // Try to run constructor (without arguments, as we don't know them)
         var result = new obj.constructor();
     } catch(e) { // Constructor failed, create object without running the constructor
-        console.log("bLALKAJDLASKJD")
         result = Object.create(Object.getPrototypeOf(obj));
     }
     // Register in hash    

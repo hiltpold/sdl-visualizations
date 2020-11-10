@@ -31,7 +31,6 @@ console.log(dslQuery);
 
 const createLineageFromAtlas = () => {
   fetchAsync(dslQuery, username, password).then((data) => {
-    console.log(data.entitiedataFromUrlss);
     const guids = data.entities.map((x) => x.guid);
     const lineage = guids.map((guid) => {
       return fetchAsync(lineageEndpoint+guid, username, password);
@@ -45,7 +44,6 @@ const createLineageFromAtlas = () => {
       acc[id]= tmpLineage.guidEntityMap[id].attributes.qualifiedName;
       return acc;
     }, {});
-    console.log(lu);
     const nodeIds = Object.keys(tmpLineage.guidEntityMap);
     const nodes = nodeIds.map((id) => { 
       return {name: lu[id] }
@@ -54,9 +52,12 @@ const createLineageFromAtlas = () => {
     const links = tmpLineage.relations.map((relation) => {
       return { source: lu[relation.fromEntityId], target: lu[relation.toEntityId], value: 1 }
     });
-    console.log(nodes);
-    console.log(links);
 
+    //console.log("< NODES >");
+    //console.log(nodes);
+    //console.log("< LINKS >");
+    //console.log(links);
+    
     createLineage(nodes, links, sankeyChart);
     
   }).catch((error) => {
@@ -65,8 +66,6 @@ const createLineageFromAtlas = () => {
 } 
 
 const createLineageFromCsvFiles = () => {
-  console.log(fetchDataFromCsvFiles(csvFiles));
-
   Promise.all(fetchDataFromCsvFiles(csvFiles)).then((data) => {
     const nodes = data[0].map( node => ({name: node.name, group: node.group}));
     const links = data[1].map( link => ({source: link.source, target: link.target, value: 1 }));
