@@ -81,5 +81,5 @@ const createLineageFromCsvFiles = () => {
   });
 }
 
-//createLineageFromAtlas();
-createLineageFromCsvFiles();
+createLineageFromAtlas();
+//createLineageFromCsvFiles();

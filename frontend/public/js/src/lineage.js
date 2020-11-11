@@ -3,11 +3,8 @@ import { sankey, sankeyLinkHorizontal } from "../contrib/d3-sankey/src/index";
 import { scaleSequential, scaleOrdinal } from "../contrib/d3-scale/src/index";
 import {interpolateViridis} from "../contrib/d3-scale-chromatic/src/index"
 import {width, height, numberFormat } from "./config";
-import { sankeyLinkPaths } from "./catmullrom";
-import getAllPaths from "./path";
-import { line, curveCatmullRom }  from "../contrib/d3-shape/src/index";
-import catmullRomOpen from "../contrib/d3-shape/src/curve/catmullRomOpen";
-import { point } from "../contrib/d3-shape/src/curve/basis";
+import getAllPaths, {linkPath} from "./path";
+import { line, curveCatmullRom, curveBasis, curveLinear, curveCardinalOpen, curveCatmullRomOpen}  from "../contrib/d3-shape/src/index";
 
 export const nodeSorter = (p1, p2) => { 
     return p1.position - p2.position; 
@@ -47,8 +44,8 @@ export const createLineage = (nodes, links, sankeyChart) => {
     return {source: src.pop(), target: tgt.pop()};
   });
 
-  const tmp = getAllPaths(pairs);
-  console.log(tmp);
+  const paths = getAllPaths(pairs);
+  console.log("PATHS ", paths);
 
   const colorGenerator = scaleSequential().domain([1, realNodes.length]).interpolator(interpolateViridis);
   const colorScale = realNodes.map((x,i)=>{return colorGenerator(i)});
@@ -56,10 +53,12 @@ export const createLineage = (nodes, links, sankeyChart) => {
   const node = sankeyChart
     .append("g")
     .selectAll("rect")
-    .data(layout.nodes)
+    .data(realNodes)
       .join("rect")
       .attr("x", d => d.x0)
       .attr("y", d => d.y0)
+      .attr("rx", 4)
+      .attr("ry", 4)
       .attr("height", d => d.y1 - d.y0)
       .attr("width", d => d.x1 - d.x0)
       .attr("fill",  d => d.group == "virtual" ? "#aaa" : color(d.category === undefined ? d.name : d.category))
@@ -73,62 +72,76 @@ export const createLineage = (nodes, links, sankeyChart) => {
     .data(layout.links)
     .join("g")
     .style("mix-blend-mode", "multiply");
-  
+  /*
   link.append("path")
     .attr("d", sankeyLinkHorizontal())
     .attr("stroke","#aaa")
-    .attr("stroke-width", d => Math.max(1, d.width));
-  
-    console.log(link.select("path"))
-
-  const tmpLine = tmp[0];
-
-  const points = [];
+    .attr("stroke-width", d => Math.max(1, d.width)*0.8);
+ */
   const pathData = [];
-  const last = tmpLine.pop();
-  const tmpLine2 = tmpLine.map(n => {
-    const link = n.sourceLinks.pop();
-    const width = link.width;
-    return {x: n.x1, y: n.y0+(n.y1-n.y0)/2, width: width }
+  paths.forEach((path) => {
+    const data = [];
+    const pathNodes = path.nodes;
+    const pathLinks = path.links;
+    const firstNode = pathNodes.slice(0,1)[0];
+    const firstLink = pathLinks.slice(0,1)[0];
+    const lastNode = pathNodes.slice(-1)[0];
+    const lastLink = pathLinks.pop();
+    data.push({ x: firstLink.source.x1, y: firstLink.y0, width: firstLink.width });
+    pathLinks.forEach((link) => {
+      data.push({x: link.target.x0 + (link.target.x1-link.target.x0)/2 , y: link.y1, width: link.width });
+    });
+    data.push({ x: lastLink.target.x0, y: lastLink.y1, width: lastLink.width });
+    pathData.push(data);
   });
-  tmpLine2.push({x: last.x1, y: last.y0+(last.y1-last.y0)/2, width: width })
-  console.log(tmpLine2);
- // point.
- // const tmp = tmpLine 
- // tmpLine.pop();
-  const tmpLinks = tmpLine.map(n => n.sourceLinks).flat();
-
-  console.log("LINKS", tmpLinks)
-  console.log("LINE: ", tmp)
-  let lineGenerator = line().x( d => {
-    console.log(d);
+  
+  //console.log(pathData)
+  
+  const lineGenerator = line().x( d => {
      return d.x;
   }).y(d => {
-    console.log(d);
     return d.y;
-  }).curve(curveCatmullRom.alpha(0.8));
-  let pathString = lineGenerator(tmpLine2);
+  }).curve(curveCatmullRom.alpha(0));
 
-
-  console.log("pathString", pathString);
-  sankeyChart.append('path').attr('d', pathString)
-             .style("stroke-width", d => d.width)
-             .style("stroke", "steelblue")
+  /*
+  let pathString = lineGenerator(pathData[17]);
+  sankeyChart.append('path')
+             .attr('d', pathString)
              .style("fill","none")
-              .attr("stroke-opacity", 0.5)
-    
+             .attr("stroke-opacity", 0.5)
+             .style("stroke", "#000")
+             .attr("stroke-width", d => {
+              console.log(d)
+              return Math.max(1, 10);
+             });
+  */
+
+  const smoothPath = sankeyChart.append("g")
+                                .selectAll("g")
+                                .data(pathData)
+                                .join("g")
+                                .append("path")
+                                //.attr("d", lineGenerator)
+                                .attr("d", (d) => linkPath(d))
+                                .style("fill","none")
+                                .attr("stroke-opacity", 0.5)
+                                .attr("stroke-width", d => Math.max(1, Math.max(...d.map(x=>x.width))*0.6))
+                                .style("stroke", "steelblue")
+ 
+  
   link.append("title").text(d => `${d.source.name} → ${d.target.name}\n${numberFormat(d.value)}`);
     sankeyChart.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 10)
     .selectAll("text")
-    .data(layout.nodes)
+    .data(realNodes)
     .join("text")
       .attr("x", d => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
       .attr("y", d => (d.y1 + d.y0) / 2)
       .attr("dy", "0.35em")
       .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
       .text(d => d.name);
+
   console.log("< LINEAGE CREATED >")
 }
 export default createLineage
