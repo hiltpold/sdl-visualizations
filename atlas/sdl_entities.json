@@ -1,0 +1,1426 @@
+{
+  "entities": [
+	{
+	  "typeName": "hive_db",
+	  "createdBy": "pgr",
+	  "guid": -100, 
+	  "attributes" : {
+		"qualifiedName": "app_datalake",
+		"clusterName": "default",
+		"name": "app_datalake"		
+	  }
+	},
+	{
+	  "typeName": "hive_db",
+	  "createdBy": "pgr",
+	  "guid": -101, 
+	  "attributes" : {
+		"qualifiedName": "lab_anabel",
+		"clusterName": "default",
+		"name": "lab_anabel"		
+	  }
+	},
+		{
+	"typeName": "hive_db",
+	  "createdBy": "pgr",
+	  "guid": -102, 
+	  "attributes" : {
+		"qualifiedName": "app_anabel",
+		"clusterName": "default",
+		"name": "app_anabel"		
+	  }
+	},
+			{
+	"typeName": "hive_db",
+	  "createdBy": "pgr",
+	  "guid": -103, 
+	  "attributes" : {
+		"qualifiedName": "app_diamond",
+		"clusterName": "default",
+		"name": "app_diamond"		
+	  }
+	},
+		{
+	  "typeName": "hive_db",
+	  "createdBy": "pgr",
+	  "guid": -104, 
+	  "attributes" : {
+		"qualifiedName": "default",
+		"clusterName": "default",
+		"name": "default"		
+	  }
+	},
+   
+     { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -200,
+      "attributes": {
+		"name": "btl_uno_h_betriebspunkt",
+		"qualifiedName": "app_datalake.btl_uno_h_betriebspunkt",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -201,
+      "attributes": {
+		"name": "stg_gleiskante_gtgstrang_mapping",
+		"qualifiedName": "lab_anabel.stg_gleiskante_gtgstrang_mapping",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -202,
+      "attributes": {
+		"name": "git_stammdaten_zugkategorie",
+		"qualifiedName": "lab_anabel.git_stammdaten_zugkategorie",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -203,
+      "attributes": {
+		"name": "stg_betriebspunkt",
+		"qualifiedName": "lab_anabel.stg_betriebspunkt",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -204,
+      "attributes": {
+		"name": "int_ihpt_fos_fahrtyp",
+		"qualifiedName": "app_datalake.int_ihpt_fos_fahrtyp",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -205,
+      "attributes": {
+		"name": "stg_formation_rcs",
+		"qualifiedName": "lab_anabel.stg_formation_rcs",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -206,
+      "attributes": {
+		"name": "stg_positionspunkt_gleiskante",
+		"qualifiedName": "lab_anabel.stg_positionspunkt_gleiskante",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -207,
+      "attributes": {
+		"name": "quality_monitoring",
+		"qualifiedName": "app_anabel.quality_monitoring",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -102, "qualifiedName": "app_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -208,
+      "attributes": {
+		"name": "uno_h_gleiskante_plus",
+		"qualifiedName": "lab_anabel.uno_h_gleiskante_plus",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -209,
+      "attributes": {
+		"name": "stg_gtg2strecke_pre",
+		"qualifiedName": "lab_anabel.stg_gtg2strecke_pre",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -210,
+      "attributes": {
+		"name": "btl_dfagis_os_linie_hist",
+		"qualifiedName": "app_datalake.btl_dfagis_os_linie_hist",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -211,
+      "attributes": {
+		"name": "stg_zuglauf_strecke_agg",
+		"qualifiedName": "lab_anabel.stg_zuglauf_strecke_agg",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -212,
+      "attributes": {
+		"name": "rep_laerm_zuganzahl",
+		"qualifiedName": "lab_anabel.rep_laerm_zuganzahl",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -213,
+      "attributes": {
+		"name": "rep_laerm_gleisbelastung",
+		"qualifiedName": "lab_anabel.rep_laerm_gleisbelastung",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -214,
+      "attributes": {
+		"name": "neig_streckenbelastung",
+		"qualifiedName": "lab_anabel.neig_streckenbelastung",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -215,
+      "attributes": {
+		"name": "stg_mag_strecke",
+		"qualifiedName": "lab_anabel.stg_mag_strecke",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -216,
+      "attributes": {
+		"name": "int_dmd_gs2gtg",
+		"qualifiedName": "app_diamond.int_dmd_gs2gtg",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -103, "qualifiedName": "app_diamond" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -217,
+      "attributes": {
+		"name": "btl_uno_h_signal",
+		"qualifiedName": "app_datalake.btl_uno_h_signal",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -218,
+      "attributes": {
+		"name": "dinar_gtgstrang_dgp_plus",
+		"qualifiedName": "lab_anabel.dinar_gtgstrang_dgp_plus",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -219,
+      "attributes": {
+		"name": "neig_gleisbelastung",
+		"qualifiedName": "lab_anabel.neig_gleisbelastung",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -220,
+      "attributes": {
+		"name": "ana1_grundtyp_mapping",
+		"qualifiedName": "lab_anabel.ana1_grundtyp_mapping",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -221,
+      "attributes": {
+		"name": "btl_uno_h_weichengrenze",
+		"qualifiedName": "app_datalake.btl_uno_h_weichengrenze",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -222,
+      "attributes": {
+		"name": "ana1_formation_footprint",
+		"qualifiedName": "lab_anabel.ana1_formation_footprint",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -223,
+      "attributes": {
+		"name": "git_fzg_stammdaten",
+		"qualifiedName": "lab_anabel.git_fzg_stammdaten",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -224,
+      "attributes": {
+		"name": "stg_strecken_dfa",
+		"qualifiedName": "lab_anabel.stg_strecken_dfa",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -225,
+      "attributes": {
+		"name": "btl_dfagis_os_strecken_gleis_bezug",
+		"qualifiedName": "app_datalake.btl_dfagis_os_strecken_gleis_bezug",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -226,
+      "attributes": {
+		"name": "btl_dinar_gtgstrang",
+		"qualifiedName": "app_datalake.btl_dinar_gtgstrang",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -227,
+      "attributes": {
+		"name": "stg_stammdaten_gefahrgut_leitstoff",
+		"qualifiedName": "lab_anabel.stg_stammdaten_gefahrgut_leitstoff",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -228,
+      "attributes": {
+		"name": "atl_zuglauf_strecke",
+		"qualifiedName": "app_anabel.atl_zuglauf_strecke",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -102, "qualifiedName": "app_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -229,
+      "attributes": {
+		"name": "atl_fahrweg_gleiskante",
+		"qualifiedName": "app_anabel.atl_fahrweg_gleiskante",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -102, "qualifiedName": "app_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -230,
+      "attributes": {
+		"name": "btl_uno_h_gleiskante",
+		"qualifiedName": "app_datalake.btl_uno_h_gleiskante",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -231,
+      "attributes": {
+		"name": "btl_dfagis_os_streckengeometrie_hist",
+		"qualifiedName": "app_datalake.btl_dfagis_os_streckengeometrie_hist",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -232,
+      "attributes": {
+		"name": "stg_positionspunkt",
+		"qualifiedName": "lab_anabel.stg_positionspunkt",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -233,
+      "attributes": {
+		"name": "btl_rcsarchiv_fahrweg",
+		"qualifiedName": "app_datalake.btl_rcsarchiv_fahrweg",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -234,
+      "attributes": {
+		"name": "btl_rcsarchiv_formation",
+		"qualifiedName": "app_datalake.btl_rcsarchiv_formation",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -235,
+      "attributes": {
+		"name": "rep_laerm_streckenbelastung",
+		"qualifiedName": "lab_anabel.rep_laerm_streckenbelastung",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -236,
+      "attributes": {
+		"name": "stg_formation",
+		"qualifiedName": "lab_anabel.stg_formation",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -237,
+      "attributes": {
+		"name": "btl_dfagis_os_strecke_hist",
+		"qualifiedName": "app_datalake.btl_dfagis_os_strecke_hist",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -238,
+      "attributes": {
+		"name": "stg_streckenkombination",
+		"qualifiedName": "lab_anabel.stg_streckenkombination",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -239,
+      "attributes": {
+		"name": "stg_befahrbarkeit",
+		"qualifiedName": "lab_anabel.stg_befahrbarkeit",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -240,
+      "attributes": {
+		"name": "stg_positionspunkt_gtgstrang",
+		"qualifiedName": "lab_anabel.stg_positionspunkt_gtgstrang",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -241,
+      "attributes": {
+		"name": "int_ihpt_fos_tf",
+		"qualifiedName": "app_datalake.int_ihpt_fos_tf",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -242,
+      "attributes": {
+		"name": "uno_h_gleiskante_clean",
+		"qualifiedName": "lab_anabel.uno_h_gleiskante_clean",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -243,
+      "attributes": {
+		"name": "ana1_fahrtyp_mapping",
+		"qualifiedName": "lab_anabel.ana1_fahrtyp_mapping",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -244,
+      "attributes": {
+		"name": "stg_zuglauf_strecke",
+		"qualifiedName": "lab_anabel.stg_zuglauf_strecke",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -245,
+      "attributes": {
+		"name": "btl_dfagis_os_betriebspunkt_hist",
+		"qualifiedName": "app_datalake.btl_dfagis_os_betriebspunkt_hist",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -246,
+      "attributes": {
+		"name": "stg_stammdaten_gefahrgut_gefahrgutklassen",
+		"qualifiedName": "lab_anabel.stg_stammdaten_gefahrgut_gefahrgutklassen",
+		"tableType": "TickTockHiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -247,
+      "attributes": {
+		"name": "stg_mag_ignorandum",
+		"qualifiedName": "lab_anabel.stg_mag_ignorandum",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -248,
+      "attributes": {
+		"name": "stg_fahrweg_gtgstrang",
+		"qualifiedName": "lab_anabel.stg_fahrweg_gtgstrang",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -249,
+      "attributes": {
+		"name": "atl_zuglauf",
+		"qualifiedName": "app_anabel.atl_zuglauf",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -102, "qualifiedName": "app_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -250,
+      "attributes": {
+		"name": "btl_dgp_netzelemente",
+		"qualifiedName": "app_datalake.btl_dgp_netzelemente",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -251,
+      "attributes": {
+		"name": "btl_uno_h_gleispunkt",
+		"qualifiedName": "app_datalake.btl_uno_h_gleispunkt",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -252,
+      "attributes": {
+		"name": "atl_fahrweg_gtgstrang",
+		"qualifiedName": "app_anabel.atl_fahrweg_gtgstrang",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -102, "qualifiedName": "app_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -253,
+      "attributes": {
+		"name": "stg_gtgstrang",
+		"qualifiedName": "lab_anabel.stg_gtgstrang",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -254,
+      "attributes": {
+		"name": "stg_formation_ihpt",
+		"qualifiedName": "lab_anabel.stg_formation_ihpt",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -255,
+      "attributes": {
+		"name": "btl_dinar_gtgweiche",
+		"qualifiedName": "app_datalake.btl_dinar_gtgweiche",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -256,
+      "attributes": {
+		"name": "stg_strecke_gleis_bezug",
+		"qualifiedName": "lab_anabel.stg_strecke_gleis_bezug",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -257,
+      "attributes": {
+		"name": "ana1_grundtyp",
+		"qualifiedName": "lab_anabel.ana1_grundtyp",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -258,
+      "attributes": {
+		"name": "stg_gleiskante2gleisstrang",
+		"qualifiedName": "lab_anabel.stg_gleiskante2gleisstrang",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -259,
+      "attributes": {
+		"name": "dinar_gtgstrang_plus",
+		"qualifiedName": "app_anabel.dinar_gtgstrang_plus",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -102, "qualifiedName": "app_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -260,
+      "attributes": {
+		"name": "btl_rcsarchiv_zuglauf",
+		"qualifiedName": "app_datalake.btl_rcsarchiv_zuglauf",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -261,
+      "attributes": {
+		"name": "stg_gtg2gleisstrang",
+		"qualifiedName": "lab_anabel.stg_gtg2gleisstrang",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -262,
+      "attributes": {
+		"name": "stg_zuglauf",
+		"qualifiedName": "lab_anabel.stg_zuglauf",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -263,
+      "attributes": {
+		"name": "uno_h_gleisknoten_clean",
+		"qualifiedName": "lab_anabel.uno_h_gleisknoten_clean",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -264,
+      "attributes": {
+		"name": "stg_stammdaten_gefahrgut_bezeichnungen",
+		"qualifiedName": "lab_anabel.stg_stammdaten_gefahrgut_bezeichnungen",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -265,
+      "attributes": {
+		"name": "stg_fahrweg_gleiskante",
+		"qualifiedName": "lab_anabel.stg_fahrweg_gleiskante",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -266,
+      "attributes": {
+		"name": "direktlink_gleisbelastung",
+		"qualifiedName": "lab_anabel.direktlink_gleisbelastung",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -267,
+      "attributes": {
+		"name": "atl_formation",
+		"qualifiedName": "app_anabel.atl_formation",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -102, "qualifiedName": "app_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -268,
+      "attributes": {
+		"name": "stg_zuglauf_ignorandum",
+		"qualifiedName": "lab_anabel.stg_zuglauf_ignorandum",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -269,
+      "attributes": {
+		"name": "uno_gleispunkt_clean",
+		"qualifiedName": "lab_anabel.uno_gleispunkt_clean",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -270,
+      "attributes": {
+		"name": "btl_uno_h_mitte_ag",
+		"qualifiedName": "app_datalake.btl_uno_h_mitte_ag",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -271,
+      "attributes": {
+		"name": "btl_uno_h_gleisknoten",
+		"qualifiedName": "app_datalake.btl_uno_h_gleisknoten",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -100, "qualifiedName": "app_datalake" }
+      }
+    },
+    { "typeName": "hive_table",
+      "createdBy": "pgr",
+	  "guid": -272,
+      "attributes": {
+		"name": "stg_gtg2strecke",
+		"qualifiedName": "lab_anabel.stg_gtg2strecke",
+		"tableType": "HiveTableDataObject",
+		"db": { "guid": -101, "qualifiedName": "lab_anabel" }
+      }
+    },
+
+
+        {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "atl_zuglauf_strecke",
+        "uri": "atl_zuglauf_strecke",
+        "name": "atl_zuglauf_strecke",
+		"action_name": "atl_zuglauf_strecke",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-207",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "atl_zuglauf",
+        "uri": "atl_zuglauf",
+        "name": "atl_zuglauf",
+		"action_name": "atl_zuglauf",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-212",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "atl_fahrweg_gtgstrang",
+        "uri": "atl_fahrweg_gtgstrang",
+        "name": "atl_fahrweg_gtgstrang",
+		"action_name": "atl_fahrweg_gtgstrang",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-213",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_strecken_dfa",
+        "uri": "stg_strecken_dfa",
+        "name": "stg_strecken_dfa",
+		"action_name": "stg_strecken_dfa",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-214",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_betriebspunkt",
+        "uri": "stg_betriebspunkt",
+        "name": "stg_betriebspunkt",
+		"action_name": "stg_betriebspunkt",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-215",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_gtgstrang",
+        "uri": "stg_gtgstrang",
+        "name": "stg_gtgstrang",
+		"action_name": "stg_gtgstrang",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-219",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_betriebspunkt",
+        "uri": "stg_betriebspunkt",
+        "name": "stg_betriebspunkt",
+		"action_name": "stg_betriebspunkt",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-224",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_fahrweg_gleiskante",
+        "uri": "stg_fahrweg_gleiskante",
+        "name": "stg_fahrweg_gleiskante",
+		"action_name": "stg_fahrweg_gleiskante",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-229",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_betriebspunkt",
+        "uri": "stg_betriebspunkt",
+        "name": "stg_betriebspunkt",
+		"action_name": "stg_betriebspunkt",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-228",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_formation_ihpt",
+        "uri": "stg_formation_ihpt",
+        "name": "stg_formation_ihpt",
+		"action_name": "stg_formation_ihpt",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-236",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_befahrbarkeit",
+        "uri": "stg_befahrbarkeit",
+        "name": "stg_befahrbarkeit",
+		"action_name": "stg_befahrbarkeit",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-238",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_strecken_dfa",
+        "uri": "stg_strecken_dfa",
+        "name": "stg_strecken_dfa",
+		"action_name": "stg_strecken_dfa",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-239",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_streckenkombination",
+        "uri": "stg_streckenkombination",
+        "name": "stg_streckenkombination",
+		"action_name": "stg_streckenkombination",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-244",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_mag_strecke",
+        "uri": "stg_mag_strecke",
+        "name": "stg_mag_strecke",
+		"action_name": "stg_mag_strecke",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-247",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_fahrweg_gleiskante",
+        "uri": "stg_fahrweg_gleiskante",
+        "name": "stg_fahrweg_gleiskante",
+		"action_name": "stg_fahrweg_gleiskante",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-248",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_zuglauf",
+        "uri": "stg_zuglauf",
+        "name": "stg_zuglauf",
+		"action_name": "stg_zuglauf",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-249",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_fahrweg_gtgstrang",
+        "uri": "stg_fahrweg_gtgstrang",
+        "name": "stg_fahrweg_gtgstrang",
+		"action_name": "stg_fahrweg_gtgstrang",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-252",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_strecken_dfa",
+        "uri": "stg_strecken_dfa",
+        "name": "stg_strecken_dfa",
+		"action_name": "stg_strecken_dfa",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-256",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_strecken_dfa",
+        "uri": "stg_strecken_dfa",
+        "name": "stg_strecken_dfa",
+		"action_name": "stg_strecken_dfa",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+         }
+],
+        "outputs": [
+          {
+            "guid": "-258",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_gtgstrang",
+        "uri": "stg_gtgstrang",
+        "name": "stg_gtgstrang",
+		"action_name": "stg_gtgstrang",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          }
+],
+        "outputs": [
+          {
+            "guid": "-261",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "atl_fahrweg_gtgstrang",
+        "uri": "atl_fahrweg_gtgstrang",
+        "name": "atl_fahrweg_gtgstrang",
+		"action_name": "atl_fahrweg_gtgstrang",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-266",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_zuglauf",
+        "uri": "stg_zuglauf",
+        "name": "stg_zuglauf",
+		"action_name": "stg_zuglauf",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-267",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "sdl_action",
+      "createdBy": "pgr",
+      "attributes": {
+        "qualifiedName": "stg_strecken_dfa",
+        "uri": "stg_strecken_dfa",
+        "name": "stg_strecken_dfa",
+		"action_name": "stg_strecken_dfa",
+        "description": "",
+        "inputs": [
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+          },
+          {
+            "guid": "-262",
+            "typeName": "hive_table"
+}
+],
+        "outputs": [
+          {
+            "guid": "-272",
+			"typeName": "hive_table"
+          }
+        ]
+      }
+    }
+
+	
+  ]
+}

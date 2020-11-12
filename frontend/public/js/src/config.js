@@ -14,3 +14,5 @@ export const numberFormat = format(",.0f");
 
 export const username = "admin";
 export const password = "admin";
+
+export const ITERATIONS = 10;

@@ -71,7 +71,7 @@ const createLineageFromCsvFiles = () => {
     const links = data[1].map( link => ({source: link.source, target: link.target, value: 1 }));
     
     //console.log("< NODES >");
-    //console.log(nodes);
+    //console.log(nodes);import { sankey, sankeyLinkHorizontal } from "../contrib/d3-sankey/src/index";
     //console.log("< LINKS >");
     //console.log(links);
 
@@ -81,5 +81,5 @@ const createLineageFromCsvFiles = () => {
   });
 }
 
-//createLineageFromAtlas();
-createLineageFromCsvFiles();
+createLineageFromAtlas();
+//createLineageFromCsvFiles();

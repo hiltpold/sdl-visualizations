@@ -5,6 +5,7 @@ import {justify} from "./align.js";
 import constant from "./constant.js";
 
 import deepClone from "../../../../js/src/clone"
+import { ITERATIONS } from "../../../src/config";
 
 function ascendingSourceBreadth(a, b) {
   return ascendingBreadth(a.source, b.source) || a.index - b.index;
@@ -386,7 +387,7 @@ export default function Sankey() {
     };
 
     // sweep 
-    for(let iteration=0;iteration<4;iteration++) {
+    for(let iteration=0;iteration<ITERATIONS;iteration++) {
       // median calculation
       if(iteration%2 === 0){
         //console.log("< MEDIAN - SWEEP FROM LEFT TO RIGHT >")

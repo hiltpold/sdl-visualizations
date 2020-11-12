@@ -55,7 +55,7 @@ export const createLineage = (nodes, links, sankeyChart) => {
   const node = sankeyChart
     .append("g")
     .selectAll("rect")
-    .data(realNodes)
+    .data(layout.nodes)
       .join("rect")
       .attr("x", d => d.x0)
       .attr("y", d => d.y0)
@@ -99,7 +99,7 @@ export const createLineage = (nodes, links, sankeyChart) => {
     pathData.push(data);
   });
   
-  console.log(pathData)
+  //console.log("PATHDATA", pathData)
   
   const lineGenerator = line().x( d => {
      return d.x;
