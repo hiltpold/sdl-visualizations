@@ -216,8 +216,8 @@ export default function Sankey() {
     }
   }
   
-  function virtualNodeFactory (name, index, depth, group, value, x0, x1, layer) {
-    return {name, index, depth, group, value, x0, x1, layer};
+  function virtualNodeFactory (name, index, depth, group, value, x0, x1, layer, endpoint) {
+    return {name, index, depth, group, value, x0, x1, layer, endpoint: endpoint};
   }
   function virtualLinkFactory (source, target, index, value) {
     return { source, target, index, value };
@@ -226,7 +226,7 @@ export default function Sankey() {
     let virtualNode = {};
     let virtualSourceLink = {};
     let virtualTargetLink = {}; 
-    virtualNode = virtualNodeFactory(`virtual_${virtualNodeIdx}`, virtualNodeIdx, source.depth+1, "virtual", 1, x0, x1, layer)
+    virtualNode = virtualNodeFactory(`virtual_${virtualNodeIdx}`, virtualNodeIdx, source.depth+1, "virtual", 1, x0, x1, layer, target)
     virtualSourceLink = virtualLinkFactory(virtualNode, target, virtualLinkIdx, 1);
     virtualTargetLink = virtualLinkFactory(source, virtualNode, virtualLinkIdx, 1);
     virtualNode.sourceLinks = [ virtualSourceLink ];
@@ -386,7 +386,7 @@ export default function Sankey() {
     };
 
     // sweep 
-    for(let iteration=0;iteration<20;iteration++) {
+    for(let iteration=0;iteration<4;iteration++) {
       // median calculation
       if(iteration%2 === 0){
         //console.log("< MEDIAN - SWEEP FROM LEFT TO RIGHT >")
@@ -419,7 +419,7 @@ export default function Sankey() {
   function computePaths(graph) {
     const currentNodes = graph.nodes.filter(n => n.layer === 0);
     console.log(currentNodes);
-    
+
   }
 
 
@@ -480,7 +480,6 @@ export default function Sankey() {
   }
 
   function initializeNodeBreadths(columns) {
-    console.log(columns)
     const ky = min(columns, c => (y1 - y0 - (c.length - 1) * py) / sum(c, value));
     for (const nodes of columns) {
       let y = y0;

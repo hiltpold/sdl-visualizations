@@ -3,8 +3,10 @@ import { sankey, sankeyLinkHorizontal } from "../contrib/d3-sankey/src/index";
 import { scaleSequential, scaleOrdinal } from "../contrib/d3-scale/src/index";
 import {interpolateViridis} from "../contrib/d3-scale-chromatic/src/index"
 import {width, height, numberFormat } from "./config";
-import getAllPaths, {linkPath} from "./path";
-import { line, curveCatmullRom, curveBasis, curveLinear, curveCardinalOpen, curveCatmullRomOpen}  from "../contrib/d3-shape/src/index";
+import getAllPaths, {linkPath } from "./path";
+import { line, curveCatmullRom}  from "../contrib/d3-shape/src/index";
+
+import deepClone from "./clone";
 
 export const nodeSorter = (p1, p2) => { 
     return p1.position - p2.position; 
@@ -43,9 +45,9 @@ export const createLineage = (nodes, links, sankeyChart) => {
     const tgt = layout.nodes.filter(n => n.name === link.target.name);
     return {source: src.pop(), target: tgt.pop()};
   });
-
+  //console.log("PAIRS", pairs);
   const paths = getAllPaths(pairs);
-  console.log("PATHS ", paths);
+  //console.log("PATHS ", paths);
 
   const colorGenerator = scaleSequential().domain([1, realNodes.length]).interpolator(interpolateViridis);
   const colorScale = realNodes.map((x,i)=>{return colorGenerator(i)});
@@ -72,17 +74,19 @@ export const createLineage = (nodes, links, sankeyChart) => {
     .data(layout.links)
     .join("g")
     .style("mix-blend-mode", "multiply");
+
   /*
   link.append("path")
     .attr("d", sankeyLinkHorizontal())
     .attr("stroke","#aaa")
     .attr("stroke-width", d => Math.max(1, d.width)*0.8);
- */
+  */
+
   const pathData = [];
   paths.forEach((path) => {
     const data = [];
-    const pathNodes = path.nodes;
-    const pathLinks = path.links;
+    const pathNodes = deepClone(path.nodes);
+    const pathLinks = deepClone(path.links);
     const firstNode = pathNodes.slice(0,1)[0];
     const firstLink = pathLinks.slice(0,1)[0];
     const lastNode = pathNodes.slice(-1)[0];
@@ -95,7 +99,7 @@ export const createLineage = (nodes, links, sankeyChart) => {
     pathData.push(data);
   });
   
-  //console.log(pathData)
+  console.log(pathData)
   
   const lineGenerator = line().x( d => {
      return d.x;
@@ -126,7 +130,7 @@ export const createLineage = (nodes, links, sankeyChart) => {
                                 .style("fill","none")
                                 .attr("stroke-opacity", 0.5)
                                 .attr("stroke-width", d => Math.max(1, Math.max(...d.map(x=>x.width))*0.6))
-                                .style("stroke", "steelblue")
+                                .style("stroke", "#aaa")
  
   
   link.append("title").text(d => `${d.source.name} → ${d.target.name}\n${numberFormat(d.value)}`);
